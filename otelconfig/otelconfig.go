@@ -318,6 +318,7 @@ type Config struct {
 	ExporterProtocol                Protocol `env:"OTEL_EXPORTER_OTLP_PROTOCOL,default=http/protobuf"`
 	TracesExporterProtocol          Protocol `env:"OTEL_EXPORTER_OTLP_TRACES_PROTOCOL"`
 	MetricsExporterProtocol         Protocol `env:"OTEL_EXPORTER_OTLP_METRICS_PROTOCOL"`
+  HYPERDX_API_KEY                 string   `env:"HYPERDX_API_KEY"`
 	Headers                         map[string]string
 	TracesHeaders                   map[string]string
 	MetricsHeaders                  map[string]string
@@ -351,6 +352,11 @@ func newConfig(opts ...Option) (*Config, error) {
 	if c.ExporterEndpoint == "" {
 		c.ExporterEndpoint = DefaultExporterEndpoint
 	}
+
+  // append authorization header if api key is set
+  if c.HYPERDX_API_KEY != "" {
+    c.Headers["Authorization"] = c.HYPERDX_API_KEY
+  }
 
 	// If a vendor has specific options to add, add them to opts
 	vendorOpts := []Option{}
