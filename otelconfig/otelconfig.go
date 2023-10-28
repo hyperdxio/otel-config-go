@@ -29,7 +29,7 @@ var (
 	ValidateConfig func(*Config) error
 	// DefaultExporterEndpoint provides a way for vendors to update the default exporter endpoint address.
 	// Defaults to 'localhost'.
-	DefaultExporterEndpoint string = "localhost"
+  DefaultExporterEndpoint string = "https://in-otel.hyperdx.io"
 )
 
 // These are strings because they get appended to the host.
@@ -315,7 +315,7 @@ type Config struct {
 	LogLevel                        string   `env:"OTEL_LOG_LEVEL,default=info"`
 	Propagators                     []string `env:"OTEL_PROPAGATORS,default=tracecontext,baggage"`
 	ResourceAttributesFromEnv       string   `env:"OTEL_RESOURCE_ATTRIBUTES"`
-	ExporterProtocol                Protocol `env:"OTEL_EXPORTER_OTLP_PROTOCOL,default=grpc"`
+	ExporterProtocol                Protocol `env:"OTEL_EXPORTER_OTLP_PROTOCOL,default=http/protobuf"`
 	TracesExporterProtocol          Protocol `env:"OTEL_EXPORTER_OTLP_TRACES_PROTOCOL"`
 	MetricsExporterProtocol         Protocol `env:"OTEL_EXPORTER_OTLP_METRICS_PROTOCOL"`
 	Headers                         map[string]string
