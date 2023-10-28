@@ -12,7 +12,7 @@ Latest release built with:
 ## Getting started
 
 ```bash
-go get github.com/honeycombio/otel-config-go
+go get github.com/hyperdxio/otel-config-go
 ```
 
 ## Configure
@@ -20,7 +20,7 @@ go get github.com/honeycombio/otel-config-go
 Minimal setup - by default will send all telemetry via GRPC to `localhost:4317`
 
 ```go
-import "github.com/honeycombio/otel-config-go/otelconfig"
+import "github.com/hyperdxio/otel-config-go/otelconfig"
 
 func main() {
     otelShutdown, err := otelconfig.ConfigureOpenTelemetry()
@@ -31,7 +31,7 @@ func main() {
 You can set headers directly instead.
 
 ```go
-import "github.com/honeycombio/otel-config-go/otelconfig"
+import "github.com/hyperdxio/otel-config-go/otelconfig"
 
 func main() {
     otelShutdown, err := otelconfig.ConfigureOpenTelemetry(

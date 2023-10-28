@@ -1,4 +1,4 @@
-module github.com/honeycombio/otel-config-go
+module github.com/hyperdxio/otel-config-go
 
 go 1.20
 

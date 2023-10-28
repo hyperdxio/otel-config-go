@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/honeycombio/otel-config-go/otelconfig/pipelines"
+	"github.com/hyperdxio/otel-config-go/otelconfig/pipelines"
 	"github.com/sethvargo/go-envconfig"
 
 	"go.opentelemetry.io/otel"
