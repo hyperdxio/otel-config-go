@@ -291,7 +291,7 @@ func TestDefaultConfig(t *testing.T) {
 	}
 
 	expected := &Config{
-    ExporterEndpoint:                "https://in-otel.hyperdx.io",
+		ExporterEndpoint:                "https://in-otel.hyperdx.io",
 		ExporterEndpointInsecure:        false,
 		TracesExporterEndpoint:          "",
 		TracesExporterEndpointInsecure:  false,
@@ -368,17 +368,19 @@ func TestEnvironmentVariables(t *testing.T) {
 		MetricsEnabled:                  false,
 		MetricsReportingPeriod:          "30s",
 		LogLevel:                        "debug",
-		Headers:                         map[string]string{},
-		TracesHeaders:                   map[string]string{},
-		MetricsHeaders:                  map[string]string{},
-		ResourceAttributes:              map[string]string{},
-		ResourceAttributesFromEnv:       "service.name=test-service-name-b,resource.clobber=ENV_WON",
-		Propagators:                     []string{"b3", "w3c"},
-		Resource:                        expectedConfiguredResource,
-		Logger:                          logger,
-		ExporterProtocol:                "grpc",
-		errorHandler:                    handler,
-		Sampler:                         trace.AlwaysSample(),
+		Headers: map[string]string{
+			"authorization": "tacocat",
+		},
+		TracesHeaders:             map[string]string{},
+		MetricsHeaders:            map[string]string{},
+		ResourceAttributes:        map[string]string{},
+		ResourceAttributesFromEnv: "service.name=test-service-name-b,resource.clobber=ENV_WON",
+		Propagators:               []string{"b3", "w3c"},
+		Resource:                  expectedConfiguredResource,
+		Logger:                    logger,
+		ExporterProtocol:          "grpc",
+		errorHandler:              handler,
+		Sampler:                   trace.AlwaysSample(),
 	}
 	assert.NoError(t, err)
 	assert.Equal(t, expectedConfig, testConfig)
@@ -447,19 +449,22 @@ func TestConfigurationOverrides(t *testing.T) {
 		MetricsExporterEndpointInsecure: false,
 		MetricsReportingPeriod:          "30s",
 		LogLevel:                        "info",
-		Headers:                         map[string]string{"config-headers": "present"},
-		TracesHeaders:                   map[string]string{"config-traces": "present"},
-		MetricsHeaders:                  map[string]string{"config-metrics": "present"},
-		ResourceAttributes:              map[string]string{},
-		ResourceAttributesFromEnv:       "service.name=test-service-name-b,resource.clobber=ENV_WON",
-		Propagators:                     []string{"b3"},
-		Resource:                        expectedConfiguredResource,
-		Logger:                          logger,
-		ExporterProtocol:                "http/protobuf",
-		TracesExporterProtocol:          "http/protobuf",
-		MetricsExporterProtocol:         "http/protobuf",
-		errorHandler:                    handler,
-		Sampler:                         trace.AlwaysSample(),
+		Headers: map[string]string{
+			"authorization":  "tacocat",
+			"config-headers": "present",
+		},
+		TracesHeaders:             map[string]string{"config-traces": "present"},
+		MetricsHeaders:            map[string]string{"config-metrics": "present"},
+		ResourceAttributes:        map[string]string{},
+		ResourceAttributesFromEnv: "service.name=test-service-name-b,resource.clobber=ENV_WON",
+		Propagators:               []string{"b3"},
+		Resource:                  expectedConfiguredResource,
+		Logger:                    logger,
+		ExporterProtocol:          "http/protobuf",
+		TracesExporterProtocol:    "http/protobuf",
+		MetricsExporterProtocol:   "http/protobuf",
+		errorHandler:              handler,
+		Sampler:                   trace.AlwaysSample(),
 		ResourceOptions: []resource.Option{
 			resource.WithAttributes(
 				attribute.String("host.name", "hardcoded-hostname"),
@@ -469,8 +474,16 @@ func TestConfigurationOverrides(t *testing.T) {
 		},
 	}
 	// Generic and signal-specific headers should merge
-	expectedTraceHeaders := map[string]string{"config-headers": "present", "config-traces": "present"}
-	expectedMetricsHeaders := map[string]string{"config-headers": "present", "config-metrics": "present"}
+	expectedTraceHeaders := map[string]string{
+		"authorization":  "tacocat",
+		"config-headers": "present",
+		"config-traces":  "present",
+	}
+	expectedMetricsHeaders := map[string]string{
+		"authorization":  "tacocat",
+		"config-headers": "present",
+		"config-metrics": "present",
+	}
 
 	assert.NoError(t, err)
 	assert.Equal(t, expectedConfig, testConfig)
@@ -809,7 +822,7 @@ func TestThatEndpointsFallBackCorrectly(t *testing.T) {
 			},
 			tracesEndpoint:  "traces-url:4318",
 			tracesInsecure:  true,
-      metricsEndpoint: "https://in-otel.hyperdx.io",
+			metricsEndpoint: "https://in-otel.hyperdx.io",
 			metricsInsecure: false,
 		},
 		{
@@ -839,7 +852,7 @@ func TestThatEndpointsFallBackCorrectly(t *testing.T) {
 		{
 			name:            "defaults",
 			configOpts:      []Option{},
-      tracesEndpoint:  "https://in-otel.hyperdx.io",
+			tracesEndpoint:  "https://in-otel.hyperdx.io",
 			tracesInsecure:  false,
 			metricsEndpoint: "https://in-otel.hyperdx.io",
 			metricsInsecure: false,
@@ -1029,6 +1042,7 @@ func setEnvironment() {
 	setenv("OTEL_PROPAGATORS", "b3,w3c")
 	setenv("OTEL_RESOURCE_ATTRIBUTES", "service.name=test-service-name-b,resource.clobber=ENV_WON")
 	setenv("OTEL_EXPORTER_OTLP_PROTOCOL", "grpc")
+	setenv("OTEL_EXPORTER_OTLP_HEADERS", "authorization=tacocat")
 }
 
 func unsetEnvironment() {
@@ -1047,6 +1061,7 @@ func unsetEnvironment() {
 		"OTEL_EXPORTER_OTLP_METRICS_PERIOD",
 		"OTEL_METRICS_ENABLED",
 		"OTEL_EXPORTER_OTLP_PROTOCOL",
+		"OTEL_EXPORTER_OTLP_HEADERS",
 	}
 	for _, envvar := range vars {
 		_ = os.Unsetenv(envvar)
