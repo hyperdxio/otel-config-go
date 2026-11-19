@@ -1,3 +1,4 @@
+// Deprecated: no longer maintained; use the upstream OpenTelemetry Go SDK, go.opentelemetry.io/otel.
 module github.com/hyperdxio/otel-config-go
 
 go 1.20

@@ -1,5 +1,25 @@
 # otel-config-go (formerly otel-launcher-go)
 
+> **Deprecated:** `github.com/hyperdxio/otel-config-go` is no longer
+> maintained. Use the upstream
+> [OpenTelemetry Go SDK](https://opentelemetry.io/docs/languages/go/) instead:
+> it is more up to date and sends to ClickStack over OTLP. Set
+> `OTEL_EXPORTER_OTLP_ENDPOINT` to your ClickStack endpoint and
+> `OTEL_EXPORTER_OTLP_HEADERS=authorization=<ingestion key>` in place of
+> `HYPERDX_API_KEY`. What `otelconfig.ConfigureOpenTelemetry` sets up maps to:
+>
+> - Traces: [`go.opentelemetry.io/otel/sdk/trace`](https://pkg.go.dev/go.opentelemetry.io/otel/sdk/trace)
+>   with [`otlptracehttp`](https://pkg.go.dev/go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp)
+>   or [`otlptracegrpc`](https://pkg.go.dev/go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc)
+> - Metrics: [`go.opentelemetry.io/otel/sdk/metric`](https://pkg.go.dev/go.opentelemetry.io/otel/sdk/metric)
+>   with [`otlpmetrichttp`](https://pkg.go.dev/go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp)
+>   or [`otlpmetricgrpc`](https://pkg.go.dev/go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc)
+> - Host and runtime metrics: [`go.opentelemetry.io/contrib/instrumentation/host`](https://pkg.go.dev/go.opentelemetry.io/contrib/instrumentation/host)
+>   and [`go.opentelemetry.io/contrib/instrumentation/runtime`](https://pkg.go.dev/go.opentelemetry.io/contrib/instrumentation/runtime)
+> - Exporter and propagator selection from `OTEL_*` variables:
+>   [`go.opentelemetry.io/contrib/exporters/autoexport`](https://pkg.go.dev/go.opentelemetry.io/contrib/exporters/autoexport)
+>   and [`go.opentelemetry.io/contrib/propagators/autoprop`](https://pkg.go.dev/go.opentelemetry.io/contrib/propagators/autoprop)
+
 This project is a configuration layer that chooses default values for configuration options that many OpenTelemetry users would ultimately configure manually, allowing for minimal code to quickly instrument with OpenTelemetry.
 
 Latest release built with:
